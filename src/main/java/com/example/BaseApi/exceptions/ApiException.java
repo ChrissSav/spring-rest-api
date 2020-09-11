@@ -1,8 +1,26 @@
-package com.example.BaseApi.config;
+package com.example.BaseApi.exceptions;
 
 public class ApiException extends RuntimeException {
 
+    private Integer statusCode;
+    private String msg;
+    private Integer httpCode;
+
     public ApiException() {
+    }
+
+
+    public Integer getStatusCode() {
+        return statusCode;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public ApiException(ExceptionCodes exceptionCodes) {
+        this.statusCode = exceptionCodes.getCode();
+        this.msg = exceptionCodes.getDescription();
     }
 
     public ApiException(String message) {

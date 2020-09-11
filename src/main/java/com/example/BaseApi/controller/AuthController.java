@@ -1,7 +1,10 @@
 package com.example.BaseApi.controller;
 
-import com.example.BaseApi.config.ApiException;
 import com.example.BaseApi.dto.RegisterRequest;
+import com.example.BaseApi.service.AuthService;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,17 +14,15 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
+@AllArgsConstructor
 public class AuthController {
 
+    private final AuthService authService;
 
     @PostMapping
-    public void singUp(@Valid @RequestBody RegisterRequest registerRequest) {
-
-        System.out.println(registerRequest.getUsername());
-        System.out.println(registerRequest.getEmail());
-        System.out.println(registerRequest.getPassword() == null);
-
-        throw new ApiException("rheger8g");
+    public ResponseEntity<String> singUp(@Valid @RequestBody RegisterRequest registerRequest) {
+        authService.singUp(registerRequest);
+        return new ResponseEntity<>("User Registration Successful", HttpStatus.CREATED);
     }
 }
 

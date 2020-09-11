@@ -4,24 +4,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.time.Instant;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import static javax.persistence.FetchType.LAZY;
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "token")
-public class VerificationToken {
-
+@Table(name = "sessions")
+public class Sessions {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
-    private String token;
+    private String session;
     @OneToOne(fetch = LAZY)
     private User user;
-    private Instant expiryDate;
 }
