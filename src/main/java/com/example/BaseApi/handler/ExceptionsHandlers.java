@@ -10,6 +10,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 @ControllerAdvice
@@ -33,10 +34,11 @@ public class ExceptionsHandlers {
 
 
     @ExceptionHandler(AuthenticationException.class)
-    //@ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResponseEntity<Object> test(ApiException apiException) {
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<Object> test(AuthenticationException apiException) {
         return new ResponseEntity<>(new ErrorResponse("rgergregergregrg"), HttpStatus.BAD_REQUEST);
     }
+
 }
 
 

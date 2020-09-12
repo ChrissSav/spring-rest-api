@@ -20,7 +20,6 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<String> getDetails() {
-        //authService.singUp(registerRequest);
         return new ResponseEntity<>("User Ok", HttpStatus.OK);
     }
 }
