@@ -4,21 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-import static javax.persistence.FetchType.LAZY;
+import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "sessions")
-public class Sessions {
+public class Session {
     @Id
     private String session;
-    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "user_id")
+    @OneToOne
     private User user;
 }
