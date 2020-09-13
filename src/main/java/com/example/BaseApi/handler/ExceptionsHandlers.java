@@ -10,33 +10,43 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 @ControllerAdvice
 public class ExceptionsHandlers {
 
     @ExceptionHandler(value = {ConflictException.class})
-    public ResponseEntity<Object> handleApiException(ConflictException conflictException) {
-        return new ResponseEntity<>(new ErrorResponse(conflictException), HttpStatus.CONFLICT);
+    public ResponseEntity<ErrorResponse> handleApiException(ConflictException conflictException) {
+        return new ResponseEntity(new ErrorResponse(conflictException), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        return new ResponseEntity<>(new ErrorResponse(ExceptionCodes.NOT_VALID_PAYLOAD), HttpStatus.UNPROCESSABLE_ENTITY);
+    protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+        return new ResponseEntity(new ErrorResponse(ExceptionCodes.NOT_VALID_PAYLOAD), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
 
     @ExceptionHandler(value = {ApiException.class})
-    public ResponseEntity<Object> handleApiException(ApiException apiException) {
-        return new ResponseEntity<>(new ErrorResponse(apiException), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorResponse> handleApiException(ApiException apiException) {
+        return new ResponseEntity(new ErrorResponse(apiException), HttpStatus.BAD_REQUEST);
     }
 
 
     @ExceptionHandler(AuthenticationException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResponseEntity<Object> test(AuthenticationException apiException) {
-        return new ResponseEntity<>(new ErrorResponse("rgergregergregrg"), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorResponse> test(AuthenticationException apiException) {
+        return new ResponseEntity(new ErrorResponse("rgergregergregrg"), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity<ErrorResponse> exceptionHandler(HttpServletRequest request, Exception apiException) {
+        return new ResponseEntity(new ErrorResponse("exceptionHandler"), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = RuntimeException.class)
+    public ResponseEntity<ErrorResponse> runtimeExceptionHandler(HttpServletRequest request, Exception apiException) {
+        return new ResponseEntity<>(new ErrorResponse(20, "Something wrong"), HttpStatus.BAD_REQUEST);
     }
 
 }

@@ -32,4 +32,9 @@ public class ErrorResponse {
         this.statusCode = apiException.getStatusCode();
         this.message = apiException.getMsg();
     }
+
+    public ErrorResponse(Integer statusCode, String message) {
+        this.statusCode = statusCode;
+        this.message = message;
+    }
 }
