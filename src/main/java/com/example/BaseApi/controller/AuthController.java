@@ -1,7 +1,10 @@
 package com.example.BaseApi.controller;
 
 import com.example.BaseApi.dto.RegisterRequest;
+import com.example.BaseApi.dto.TokenRequest;
+import com.example.BaseApi.dto.UserResponse;
 import com.example.BaseApi.service.AuthService;
+import javafx.util.Pair;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +22,23 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping
-    public ResponseEntity<String> singUp(@Valid @RequestBody RegisterRequest registerRequest) {
-        authService.singUp(registerRequest);
-        return new ResponseEntity<>("User Registration Successful", HttpStatus.CREATED);
+    @PostMapping("/signup")
+    public ResponseEntity<UserResponse> singUp(@Valid @RequestBody RegisterRequest registerRequest) {
+        Pair<UserResponse, String> user = authService.singUp(registerRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).header("bearer", user.getValue()).body(user.getKey());
+    }
+
+/*
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+        return authService.login(loginRequest);
+    }
+*/
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@Valid @RequestBody TokenRequest tokenRequest) {
+        authService.deleteSession(tokenRequest.getToken());
+        return ResponseEntity.status(HttpStatus.OK).body("Deleted Successfully!!");
     }
 }
 

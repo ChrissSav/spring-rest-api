@@ -1,7 +1,7 @@
 package com.example.BaseApi.controller;
 
 import com.example.BaseApi.dto.UserResponse;
-import com.example.BaseApi.mepper.UserMapper;
+import com.example.BaseApi.mapper.UserMapper;
 import com.example.BaseApi.model.User;
 import com.example.BaseApi.service.AuthService;
 import lombok.AllArgsConstructor;

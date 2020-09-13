@@ -11,4 +11,7 @@ import java.util.Optional;
 @Transactional
 public interface SessionRepository extends JpaRepository<Session, String> {
     Optional<Session> findBySession(String session);
+
+    void deleteBySession(String session);
+
 }

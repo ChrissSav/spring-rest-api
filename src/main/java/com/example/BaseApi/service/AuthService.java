@@ -1,12 +1,22 @@
 package com.example.BaseApi.service;
 
 
+import com.example.BaseApi.dto.LoginRequest;
 import com.example.BaseApi.dto.RegisterRequest;
+import com.example.BaseApi.dto.UserResponse;
 import com.example.BaseApi.exceptions.ConflictException;
 import com.example.BaseApi.exceptions.ExceptionCodes;
+import com.example.BaseApi.mapper.UserMapper;
+import com.example.BaseApi.model.Session;
 import com.example.BaseApi.model.User;
+import com.example.BaseApi.repository.SessionRepository;
 import com.example.BaseApi.repository.UserRepository;
+import javafx.util.Pair;
 import lombok.AllArgsConstructor;
+import net.bytebuddy.utility.RandomString;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,10 +33,11 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final SessionRepository sessionRepository;
+    private final UserMapper userMapper;
+    private final AuthenticationManager authenticationManager;
 
-    public void singUp(RegisterRequest registerRequest) {
-
-
+    public Pair<UserResponse, String> singUp(RegisterRequest registerRequest) {
         Optional<User> userExist = userRepository.findByEmail(registerRequest.getEmail());
         if (userExist.isPresent())
             throw new ConflictException(ExceptionCodes.EMAIL_ALREADY_EXIST);
@@ -36,9 +47,8 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setCreated(Instant.now());
         user.setEnabled(false);
-
-        userRepository.save(user);
-
+        user = userRepository.save(user);
+        return new Pair<>(userMapper.mapToUserResponse(user), generateSession(user));
     }
 
     @Transactional(readOnly = true)
@@ -48,4 +58,38 @@ public class AuthService {
         return userRepository.findByEmail(principal.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User name not found - " + principal.getUsername()));
     }
+
+    public void deleteSession(String session) {
+        sessionRepository.deleteBySession(session);
+    }
+
+    public void login(LoginRequest loginRequest) {
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+    }
+
+    public String getSession() {
+        return new RandomString(70).nextString();
+
+    }
+
+    public String generateSession(User user) {
+        Session session = sessionRepository.save(new Session(getSession(), user));
+        return session.getSession();
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

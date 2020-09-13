@@ -22,7 +22,7 @@ public class ExceptionsHandlers {
         return new ResponseEntity(new ErrorResponse(conflictException), HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
         return new ResponseEntity(new ErrorResponse(ExceptionCodes.NOT_VALID_PAYLOAD), HttpStatus.UNPROCESSABLE_ENTITY);
     }
@@ -39,14 +39,10 @@ public class ExceptionsHandlers {
         return new ResponseEntity(new ErrorResponse("rgergregergregrg"), HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<ErrorResponse> exceptionHandler(HttpServletRequest request, Exception apiException) {
-        return new ResponseEntity(new ErrorResponse("exceptionHandler"), HttpStatus.BAD_REQUEST);
-    }
 
     @ExceptionHandler(value = RuntimeException.class)
     public ResponseEntity<ErrorResponse> runtimeExceptionHandler(HttpServletRequest request, Exception apiException) {
-        return new ResponseEntity<>(new ErrorResponse(20, apiException.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(new ErrorResponse(ExceptionCodes.NOT_VALID_PAYLOAD), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
 }

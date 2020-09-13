@@ -1,4 +1,4 @@
-package com.example.BaseApi.mepper;
+package com.example.BaseApi.mapper;
 
 import com.example.BaseApi.dto.UserResponse;
 import com.example.BaseApi.model.User;

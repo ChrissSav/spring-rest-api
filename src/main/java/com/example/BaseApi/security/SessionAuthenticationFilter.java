@@ -46,7 +46,7 @@ public class SessionAuthenticationFilter extends OncePerRequestFilter {
     private User getUsernameFromSession(String session) {
         Optional<Session> sessionOptional = sessionRepository.findBySession(session);
         return sessionOptional.map(Session::getUser)
-                .orElseThrow(() -> new ApiException("Invalid refresh Token"));
+                .orElseThrow(() -> new ApiException("Invalid Token"));
     }
 
 

@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/auth/**", "/api/auth")
+                .antMatchers("/api/auth/**")
                 .permitAll()
                 .antMatchers("/v2/api-docs", "/configuration/ui",
                         "/swagger-resources/**", "/configuration/security",
@@ -42,7 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .anyRequest()
                 .authenticated();
-
         httpSecurity.addFilterBefore(sessionAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter.class).exceptionHandling()
                 .accessDeniedHandler((request, response, accessDeniedException) -> {
