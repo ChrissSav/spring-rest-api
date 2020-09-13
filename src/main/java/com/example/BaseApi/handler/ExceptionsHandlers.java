@@ -46,7 +46,7 @@ public class ExceptionsHandlers {
 
     @ExceptionHandler(value = RuntimeException.class)
     public ResponseEntity<ErrorResponse> runtimeExceptionHandler(HttpServletRequest request, Exception apiException) {
-        return new ResponseEntity<>(new ErrorResponse(20, "Something wrong"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse(20, apiException.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
 }
