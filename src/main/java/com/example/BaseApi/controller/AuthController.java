@@ -1,5 +1,6 @@
 package com.example.BaseApi.controller;
 
+import com.example.BaseApi.dto.LoginRequest;
 import com.example.BaseApi.dto.RegisterRequest;
 import com.example.BaseApi.dto.TokenRequest;
 import com.example.BaseApi.dto.UserResponse;
@@ -28,12 +29,13 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).header("bearer", user.getValue()).body(user.getKey());
     }
 
-/*
+
     @PostMapping("/login")
-    public ResponseEntity<UserResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        return authService.login(loginRequest);
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
+        // return authService.login(loginRequest);
+        return ResponseEntity.status(HttpStatus.OK).body("Deleted Successfully!!");
     }
-*/
+
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@Valid @RequestBody TokenRequest tokenRequest) {
