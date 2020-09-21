@@ -31,9 +31,9 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
-        // return authService.login(loginRequest);
-        return ResponseEntity.status(HttpStatus.OK).body("Deleted Successfully!!");
+    public ResponseEntity<Void> login(@Valid @RequestBody LoginRequest loginRequest) {
+        String bearer = authService.login(loginRequest);
+        return ResponseEntity.status(HttpStatus.OK).header("bearer", bearer).body(null);
     }
 
 

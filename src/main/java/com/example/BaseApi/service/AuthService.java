@@ -63,9 +63,11 @@ public class AuthService {
         sessionRepository.deleteBySession(session);
     }
 
-    public void login(LoginRequest loginRequest) {
+    public String login(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
+        String token = generateSession(getCurrentUser());
+        return token;
     }
 
     public String getSession() {

@@ -36,7 +36,7 @@ public class ExceptionsHandlers {
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponse> test(AuthenticationException apiException) {
-        return new ResponseEntity(new ErrorResponse("rgergregergregrg"), HttpStatus.FORBIDDEN);
+        return new ResponseEntity(new ErrorResponse(ExceptionCodes.ACCESS_DENIED), HttpStatus.FORBIDDEN);
     }
 
 
