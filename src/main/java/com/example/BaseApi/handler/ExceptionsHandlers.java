@@ -42,7 +42,7 @@ public class ExceptionsHandlers {
 
     @ExceptionHandler(value = RuntimeException.class)
     public ResponseEntity<ErrorResponse> runtimeExceptionHandler(HttpServletRequest request, Exception apiException) {
-        return new ResponseEntity(new ErrorResponse(ExceptionCodes.NOT_VALID_PAYLOAD), HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity(new ErrorResponse(ExceptionCodes.SOMETHING_WRONG), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
 }
