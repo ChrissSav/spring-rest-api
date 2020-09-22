@@ -1,9 +1,9 @@
 package com.example.BaseApi.security;
 
 import com.example.BaseApi.exceptions.ApiException;
-import com.example.BaseApi.model.Session;
+import com.example.BaseApi.model.Token;
 import com.example.BaseApi.model.User;
-import com.example.BaseApi.repository.SessionRepository;
+import com.example.BaseApi.repository.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,12 +23,12 @@ import java.util.Optional;
 
 
 @Component
-public class SessionAuthenticationFilter extends OncePerRequestFilter {
+public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
-    private SessionRepository sessionRepository;
+    private TokenRepository tokenRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -44,8 +44,8 @@ public class SessionAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private User getUsernameFromSession(String session) {
-        Optional<Session> sessionOptional = sessionRepository.findBySession(session);
-        return sessionOptional.map(Session::getUser)
+        Optional<Token> sessionOptional = tokenRepository.findBySession(session);
+        return sessionOptional.map(Token::getUser)
                 .orElseThrow(() -> new ApiException("Invalid Token"));
     }
 

@@ -7,9 +7,9 @@ import com.example.BaseApi.dto.UserResponse;
 import com.example.BaseApi.exceptions.ConflictException;
 import com.example.BaseApi.exceptions.ExceptionCodes;
 import com.example.BaseApi.mapper.UserMapper;
-import com.example.BaseApi.model.Session;
+import com.example.BaseApi.model.Token;
 import com.example.BaseApi.model.User;
-import com.example.BaseApi.repository.SessionRepository;
+import com.example.BaseApi.repository.TokenRepository;
 import com.example.BaseApi.repository.UserRepository;
 import javafx.util.Pair;
 import lombok.AllArgsConstructor;
@@ -33,7 +33,7 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final SessionRepository sessionRepository;
+    private final TokenRepository tokenRepository;
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
 
@@ -60,7 +60,7 @@ public class AuthService {
     }
 
     public void deleteSession(String session) {
-        sessionRepository.deleteBySession(session);
+        tokenRepository.deleteBySession(session);
     }
 
     public String login(LoginRequest loginRequest) {
@@ -76,8 +76,8 @@ public class AuthService {
     }
 
     public String generateSession(User user) {
-        Session session = sessionRepository.save(new Session(getSession(), user));
-        return session.getSession();
+        Token token = tokenRepository.save(new Token(getSession(), user));
+        return token.getToken();
     }
 
 }

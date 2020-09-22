@@ -10,10 +10,10 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "sessions")
-public class Session {
+@Table
+public class Token {
     @Id
-    private String session;
+    private String token;
     @JoinColumn(name = "user_id")
     @OneToOne
     private User user;

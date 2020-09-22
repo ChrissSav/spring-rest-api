@@ -2,7 +2,7 @@ package com.example.BaseApi.config;
 
 import com.example.BaseApi.exceptions.ErrorResponse;
 import com.example.BaseApi.exceptions.ExceptionCodes;
-import com.example.BaseApi.security.SessionAuthenticationFilter;
+import com.example.BaseApi.security.TokenAuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final SessionAuthenticationFilter sessionAuthenticationFilter;
+    private final TokenAuthenticationFilter tokenAuthenticationFilter;
     private final UserDetailsService userDetailsService;
 
     @Override
@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .anyRequest()
                 .authenticated();
-        httpSecurity.addFilterBefore(sessionAuthenticationFilter,
+        httpSecurity.addFilterBefore(tokenAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter.class).exceptionHandling()
                 .accessDeniedHandler((request, response, accessDeniedException) -> {
                     response.sendError(HttpServletResponse.SC_FORBIDDEN);
