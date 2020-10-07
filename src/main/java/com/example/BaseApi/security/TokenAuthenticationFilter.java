@@ -44,7 +44,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private User getUsernameFromSession(String session) {
-        Optional<Token> sessionOptional = tokenRepository.findBySession(session);
+        Optional<Token> sessionOptional = tokenRepository.findByToken(session);
         return sessionOptional.map(Token::getUser)
                 .orElseThrow(() -> new ApiException("Invalid Token"));
     }

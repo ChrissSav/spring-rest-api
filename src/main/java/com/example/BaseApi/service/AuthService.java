@@ -60,7 +60,7 @@ public class AuthService {
     }
 
     public void deleteSession(String session) {
-        tokenRepository.deleteBySession(session);
+        tokenRepository.deleteByToken(session);
     }
 
     public String login(LoginRequest loginRequest) {

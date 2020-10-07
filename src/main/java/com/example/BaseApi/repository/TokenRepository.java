@@ -10,8 +10,8 @@ import java.util.Optional;
 @Repository
 @Transactional
 public interface TokenRepository extends JpaRepository<Token, String> {
-    Optional<Token> findBySession(String token);
+    Optional<Token> findByToken(String token);
 
-    void deleteBySession(String token);
+    void deleteByToken(String token);
 
 }
