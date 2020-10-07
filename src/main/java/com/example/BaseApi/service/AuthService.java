@@ -38,12 +38,11 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public Pair<UserResponse, String> singUp(RegisterRequest registerRequest) {
-        Optional<User> userExist = userRepository.findByEmail(registerRequest.getEmail());
+        Optional<User> userExist = userRepository.findByUsername(registerRequest.getEmail());
         if (userExist.isPresent())
             throw new ConflictException(ExceptionCodes.EMAIL_ALREADY_EXIST);
         User user = new User();
-        user.setUsername(registerRequest.getUsername());
-        user.setEmail(registerRequest.getEmail());
+        user.setUsername(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setCreated(Instant.now());
         user.setEnabled(true);
@@ -55,7 +54,7 @@ public class AuthService {
     public User getCurrentUser() {
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.
                 getContext().getAuthentication().getPrincipal();
-        return userRepository.findByEmail(principal.getUsername())
+        return userRepository.findByUsername(principal.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User name not found - " + principal.getUsername()));
     }
 
@@ -63,11 +62,11 @@ public class AuthService {
         tokenRepository.deleteByToken(session);
     }
 
-    public String login(LoginRequest loginRequest) {
+    public Pair<UserResponse, String> login(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = generateSession(getCurrentUser());
-        return token;
+        return new Pair<>(userMapper.mapToUserResponse(getCurrentUser()), token);
     }
 
     public String getSession() {

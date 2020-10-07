@@ -9,5 +9,6 @@ import org.mapstruct.Mapping;
 public interface UserMapper {
 
     @Mapping(target = "id", source = "userId")
+    @Mapping(target = "email", source = "username")
     UserResponse mapToUserResponse(User user);
 }

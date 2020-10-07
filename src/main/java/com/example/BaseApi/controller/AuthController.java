@@ -31,9 +31,11 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@Valid @RequestBody LoginRequest loginRequest) {
-        String bearer = authService.login(loginRequest);
-        return ResponseEntity.status(HttpStatus.OK).header("bearer", bearer).body(null);
+    public ResponseEntity<UserResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+        Pair<UserResponse, String> user = authService.login(loginRequest);
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("bearer", user.getValue())
+                .body(user.getKey());
     }
 
 

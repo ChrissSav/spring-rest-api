@@ -15,8 +15,6 @@ public class RegisterRequest {
 
     @Email
     private String email;
-    @NotBlank
-    private String username;
     @NotBlank(message = "user name not null")
     private String password;
 
