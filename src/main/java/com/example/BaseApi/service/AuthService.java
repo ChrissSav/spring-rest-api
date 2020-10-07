@@ -46,7 +46,7 @@ public class AuthService {
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setCreated(Instant.now());
-        user.setEnabled(false);
+        user.setEnabled(true);
         user = userRepository.save(user);
         return new Pair<>(userMapper.mapToUserResponse(user), generateSession(user));
     }
